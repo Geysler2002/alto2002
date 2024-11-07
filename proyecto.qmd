@@ -1,27 +1,76 @@
 ---
 title: "Proyecto"
 author: "Geysler Mariñas Alvarado"
-format: html
-editor: visual
+format:
+  html:
+    toc: true
+    toc-location: left
+    number-sections: true
+    embed-resources: true
+    smooth-scroll: true
+    anchor-sections: true
+    output-file: index
 ---
+# Introducción
+En el entorno actual, las organizaciones dependen cada vez más de los datos para tomar decisiones estratégicas y mejorar sus operaciones. Este proyecto de análisis de datos se centra en aprovechar información estructurada y no estructurada para identificar patrones, tendencias y conocimientos clave que puedan guiar las decisiones informadas. A través del uso de técnicas avanzadas de procesamiento, visualización y modelado de datos, se busca transformar grandes volúmenes de información en conocimientos prácticos que agreguen valor.
 
-## Quarto
+El objetivo principal de este proyecto es aplicar métodos de análisis de datos para explorar y responder preguntas específicas, utilizando diversas herramientas y tecnologías que nos permitan obtener una visión clara y profunda de los datos disponibles. Además, se generarán visualizaciones que facilitarán la comprensión de los resultados y se propondrán recomendaciones basadas en los resultados obtenidos.
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+En este documento se detallarán los objetivos específicos del análisis, las metodologías empleadas, así como los resultados y conclusiones obtenidas. De esta forma, se espera que este proyecto sea una herramienta útil para la toma de decisiones basada en datos y contribuya a la optimización y mejora continua de los procesos organizacionales.
 
-## Running Code
+![Innovación analitica](https://lisainsurtech.com/wp-content/uploads/2022/01/exploratory-data-analysis-using-python-blog-hero.jpeg)
 
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+# Para realizar el proyecto debo
+
+1.  Tener mi proyecto
+2.  Conectar mi proyecto a GithUb
+3.  Tener un archivo en formato html llamado index.html
+4.  Hacer push al repositorio
+5.  Activar Github pages
+
+
+# Modelos lineales
+
+
+Un modelo lineal es un tipo de modelo estadístico y matemático que asume una relación lineal entre una variable dependiente (respuesta) y una o más variables independientes (predictores o explicativas). La característica clave de los modelos lineales es que la relación entre la variable dependiente y cada predictor es una combinación lineal, lo que significa que la ecuación del modelo tiene la forma:
+![modelo lineal](http://3.bp.blogspot.com/-Vz2adH3zaeI/VTPq4T2rmDI/AAAAAAAABr4/K-ssPFWG8Tc/s1600/Regresion_ecuacion_2.jpg)
+Los modelos lineales son ampliamente utilizados porque son sencillos de interpretar y calcular, y proporcionan una primera aproximación útil para entender la relación entre las variables en un conjunto de datos. Además, permiten estimar los efectos de los predictores sobre la variable de interés, haciendo posibles inferencias y predicciones.
+
+## Insertar datos
 
 ```{r}
-1 + 1
-```
 
-You can add options to executable code like this
+url <- "https://docs.google.com/spreadsheets/d/15r7ZwcZZHbEgltlF6gSFvCTFA-CFzVBWwg3mFlRyKPs/edit?gid=172957346#gid=172957346"
+
+gs <- url %>% 
+  as_sheets_id()
+
+fb <- gs %>%
+  range_read("fb")
+
+str(fb)
+```
+## Modelo lineal para lfa
 
 ```{r}
-#| echo: false
-2 * 2
+modelo <- aov(formula = lfa ~ bloque + riego + geno + riego*geno
+              , data =fb)
+
+anova(modelo)
+
+plot(modelo)
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+
+### Boxplot
+
+```{r}
+ggplot(fb, aes(x = geno, y = lfa, colour = riego)) + 
+         geom_boxplot(outlier.colour = "green", outlier.shape = 16, outlier.size = 2) + 
+         labs(title = "Boxplot con interacción de niveles de riego y genotipo",
+              x = "Interacción riego y genotipo",
+              y = "Área foliar (cm^2)")
+         theme_minimal() + 
+         theme(axis.text.x = element_text(angle = 45,hjust = 1))
+```
+
