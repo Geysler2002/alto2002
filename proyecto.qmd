@@ -92,9 +92,11 @@ ggplot(fb, aes(x = geno, y = lfa, colour = riego)) +
 
 
 
-### Modelo lineal para hi
+# Modelo lineal para hi
 
 Un modelo Líneal HI (Híbrido Inteligente Lineal) en el contexto de modelos de machine learning y análisis de datos es un enfoque que mezcla técnicas lineales con herramientas de inteligencia artificial y aprendizaje automático, para ofrecer soluciones más precisas y adaptativas en aplicaciones específicas
+
+Datos
 
 ```{r}
 modelo <- aov(formula = hi ~ bloque + riego + geno + riego*geno
@@ -104,8 +106,12 @@ anova(modelo)
 plot(modelo)
 ```
 
-### Boxplot
 
+
+
+## Boxplot
+
+Datos
 ```{r}
 ggplot(fb, aes(x = geno, y = hi, colour = riego)) + 
          geom_boxplot(outlier.colour = "blue", outlier.shape = 16, outlier.size = 2) + 
@@ -116,8 +122,12 @@ ggplot(fb, aes(x = geno, y = hi, colour = riego)) +
          theme(axis.text.x = element_text(angle = 45,hjust = 1))
 ```
 
-###Modelo lineal mixto 
 
+# Modelo lineal mixto 
+
+Un modelo lineal mixto es un tipo de modelo estadístico que combina efectos fijos y efectos aleatorios para analizar datos en los que existen dependencias o estructuras de agrupamiento. Este modelo es especialmente útil en situaciones donde los datos no son independientes entre sí, sino que están organizados en grupos, como en estudios de datos longitudinales o experimentos con diseños en bloques.
+
+Datos 
 ```{r}
 library(lme4)
 
@@ -137,8 +147,22 @@ model
 
 ```
 
-##### Agricolae: comparacion de medias 
 
+# Agricolae: comparacion de medias 
+
+La prueba de comparación de medias llamada Agricolae se refiere a un conjunto de métodos y funciones de la biblioteca "Agricolae" del software estadístico R. Esta biblioteca es ampliamente utilizada en experimentos agrícolas y estudios científicos para realizar análisis de comparación de medias, pruebas de hipótesis y análisis de varianza, entre otros.
+
+Agricolae ofrece diversas pruebas para comparar medias, como:
+
+Prueba de Tukey (HSD - Honestly Significant Difference): Compara todas las medias posibles en un diseño de análisis de varianza (ANOVA) y determina cuáles medias difieren significativamente entre sí.
+
+Prueba de Duncan: Similar a Tukey, pero generalmente más liberal, es decir, detecta más diferencias significativas.
+
+Prueba de Bonferroni: Ajusta el nivel de significación para evitar el error tipo I cuando se realizan múltiples comparaciones.
+
+Prueba de Scheffé: Útil cuando se desea probar todas las posibles comparaciones lineales de medias, especialmente en estudios de comparación múltiples.
+
+Datos 
 ```{r}
 modelo <- lm(formula = lfa ~ bloque + riego + geno + riego * geno, data = fb)
 
@@ -151,8 +175,10 @@ print(tukey_result)
 plot(tukey_result)
 ```
 
-###### Tabla de Tukey
 
+## Tabla de Tukey
+ 
+Datos
 ```{r}
 tukey_result
 grupos <- tukey_result$groups %>% 
@@ -179,7 +205,9 @@ ggplot(grupos, aes(x = geno, y = lfa, fill = riego)) +  # Asegúrate de que "LFA
   scale_fill_discrete(name = "Riego")
 ```
 
-####### Grafico de comparación de media: Tunkey
+### Grafico de comparación de media: Tunkey
+
+Datos
 
 ```{r}
 ggplot(grupos, aes(x = geno, y = lfa, fill = riego)) +  # Asegúrate de que "lfa" sea el nombre correcto
@@ -194,7 +222,14 @@ ggplot(grupos, aes(x = geno, y = lfa, fill = riego)) +  # Asegúrate de que "lfa
             position = position_dodge(0.9), vjust = 0)  # Ajustar el espaciado de las letras
 ```
 
-######## emmeans: Comparación de medias 
+# Emmeans: Comparación de medias 
+
+Emmeans es una abreviatura para "Estimated Marginal Means" o "Medias Marginales Estimadas". En el contexto del análisis estadístico, emmeans se refiere a una técnica utilizada para realizar comparaciones de medias ajustadas en modelos estadísticos, especialmente cuando se emplean modelos lineales generalizados (como ANOVA, regresión lineal y otros modelos de efectos mixtos). En particular, el paquete emmeans en R facilita este tipo de análisis.
+
+¿Para qué se utiliza emmeans?
+Cuando se desea comparar las medias de distintos grupos o niveles de un factor en un modelo, es útil ajustar las medias para tener en cuenta otros factores en el modelo. Esto permite obtener una comparación más precisa y menos sesgada, ya que emmeans estima la media de cada grupo controlando o ajustando por los efectos de otras variables.
+
+Datos
 
 ```{r}
 model <- lme4::lmer(formula = hi ~ riego + geno + riego * geno + (1 | bloque), data = fb)
@@ -216,7 +251,7 @@ cm3
 
 ```
 
-######### Grafícas 
+## Grafícas 
 
 ```{r}
 cm1_df <- as.data.frame(cm1)
@@ -242,14 +277,34 @@ ggplot(dtcm, aes(x = geno, y = emmean, fill = riego)) +
   ggtitle("Gráfico de barras: LFA por genotipo y riego")
 ```
 
-######### Analisís multivariado
+# Analisís multivariado
+
+El análisis multivariado es un conjunto de técnicas estadísticas que permite analizar y entender datos que involucran múltiples variables al mismo tiempo. A diferencia del análisis univariado (que examina una variable) o bivariado (dos variables), el análisis multivariado permite estudiar las relaciones e interacciones entre tres o más variables simultáneamente. Esto es particularmente útil en estudios donde los fenómenos son complejos y dependen de múltiples factores interrelacionados.
+
+¿Para qué se usa?
+El análisis multivariado es ampliamente utilizado en diversas áreas como las ciencias sociales, la biología, la economía, la psicología, el marketing, entre otras, para:
+
+Identificar patrones y relaciones complejas entre varias variables.
+Reducir dimensionalidad de los datos, es decir, reducir el número de variables conservando la mayor cantidad de información posible (por ejemplo, mediante el análisis de componentes principales).
+Clasificar y segmentar datos, ayudando a agrupar observaciones similares.
+Predecir valores de variables dependientes con base en múltiples variables independientes.
+
+Datos
 
 ```{r}
 str(fb)
 
 ```
 
-########## Correlación
+# Correlación
+
+La correlación es una medida estadística que indica la relación y el grado de asociación entre dos variables. En términos simples, muestra si existe una conexión entre dos conjuntos de datos y qué tan fuerte es esa conexión. Se expresa con un valor numérico, llamado coeficiente de correlación, que oscila entre -1 y 1:
+
+1 indica una correlación positiva perfecta: cuando una variable aumenta, la otra también lo hace de manera proporcional.
+-1 indica una correlación negativa perfecta: cuando una variable aumenta, la otra disminuye de manera proporcional.
+0 indica que no hay correlación: no existe ninguna relación entre las variables.
+
+Datos 
 
 ```{r}
 library(tidyverse)
@@ -267,7 +322,22 @@ fb %>%
              )
 ```
 
-########### PCA: Analisís de componentes principales 
+# PCA: Analisís de componentes principales 
+
+El Análisis de Componentes Principales es una técnica de reducción de dimensionalidad usada en el análisis de datos y en la ciencia de datos. Su principal propósito es simplificar conjuntos de datos grandes y complejos sin perder mucha información relevante. PCA transforma un conjunto de variables posiblemente correlacionadas en un conjunto de variables nuevas, llamadas componentes principales, que son no correlacionadas entre sí y capturan la mayor parte de la variabilidad del conjunto de datos original.
+
+¿Cómo funciona PCA?
+Estandarización de datos: Se asegura que los datos estén en una escala comparable, ya que PCA es sensible a las diferencias de escala.
+
+Cálculo de la matriz de covarianza: Se calcula la matriz de covarianza de los datos estandarizados para ver cómo varían las variables entre sí.
+
+Cálculo de valores propios y vectores propios: Se obtienen los valores propios y vectores propios de la matriz de covarianza para identificar las direcciones de máxima varianza en los datos.
+
+Selección de componentes principales: Los vectores propios, ordenados por la magnitud de sus valores propios, representan los componentes principales. Los primeros componentes explican la mayor cantidad de varianza en los datos.
+
+Proyección de los datos: Los datos originales se proyectan sobre los componentes seleccionados para obtener una representación reducida del conjunto de datos.
+
+Datos
 
 ```{r}
 library(FactoMineR)
@@ -286,7 +356,8 @@ list(p1, p2) %>%
   plot_grid(plotlist = .,nrow = 1)
 ```
 
-############ Agradecimiento 
+# Agradecimiento 
+
 ![I appreciate your visit](https://www.lifeder.com/wp-content/uploads/2018/03/estoy-muy-agradecido-min-1068x758.jpg)
 
 
