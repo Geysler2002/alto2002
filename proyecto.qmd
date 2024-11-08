@@ -38,6 +38,8 @@ Los modelos lineales son ampliamente utilizados porque son sencillos de interpre
 
 ## Insertar datos
 
+Datos
+
 ```{r}
 source('https://inkaverse.com/setup.r')
 
@@ -51,7 +53,12 @@ fb <- gs %>%
 
 str(fb)
 ```
-## Modelo lineal para lfa
+
+# Modelo lineal para lfa
+
+Es también conocido como modelo de factores latentes, es un enfoque utilizado en análisis de datos, especialmente en el campo de aprendizaje automático y sistemas de recomendación, para identificar factores ocultos o "latentes" que explican patrones en los datos.
+
+Datos
 
 ```{r}
 modelo <- aov(formula = lfa ~ bloque + riego + geno + riego*geno
@@ -62,9 +69,17 @@ anova(modelo)
 plot(modelo)
 ```
 
+## Boxplot
 
-### Boxplot
+Un boxplot, también conocido como diagrama de caja y bigotes, es una representación gráfica que muestra la distribución de un conjunto de datos a través de cinco valores clave:
 
+Mínimo: El valor más bajo, excluyendo los valores atípicos (outliers).
+Primer cuartil (Q1): El 25% de los datos están por debajo de este valor.
+Mediana (Q2): El valor central de los datos, es decir, el 50% de los datos están por debajo de este valor.
+Tercer cuartil (Q3): El 75% de los datos están por debajo de este valor.
+Máximo: El valor más alto, excluyendo los valores atípicos.
+
+Datos
 ```{r}
 ggplot(fb, aes(x = geno, y = lfa, colour = riego)) + 
          geom_boxplot(outlier.colour = "green", outlier.shape = 16, outlier.size = 2) + 
@@ -75,7 +90,11 @@ ggplot(fb, aes(x = geno, y = lfa, colour = riego)) +
          theme(axis.text.x = element_text(angle = 45,hjust = 1))
 ```
 
-# Modelo lineal para hi
+
+
+### Modelo lineal para hi
+
+Un modelo Líneal HI (Híbrido Inteligente Lineal) en el contexto de modelos de machine learning y análisis de datos es un enfoque que mezcla técnicas lineales con herramientas de inteligencia artificial y aprendizaje automático, para ofrecer soluciones más precisas y adaptativas en aplicaciones específicas
 
 ```{r}
 modelo <- aov(formula = hi ~ bloque + riego + geno + riego*geno
